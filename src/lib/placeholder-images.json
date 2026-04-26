@@ -1,0 +1,16 @@
+{
+  "placeholderImages": [
+    {
+      "id": "community-unity",
+      "description": "Community volunteers working together",
+      "imageUrl": "https://picsum.photos/seed/unity/1200/800",
+      "imageHint": "community volunteers"
+    },
+    {
+      "id": "disaster-relief",
+      "description": "Disaster relief operations",
+      "imageUrl": "https://picsum.photos/seed/relief/1200/800",
+      "imageHint": "disaster relief"
+    }
+  ]
+}
