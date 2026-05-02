@@ -6,8 +6,12 @@ const { ok, fail } = require('../utils/response');
 // POST /api/cases
 exports.createCase = async (req, res) => {
   try {
-    const newCase = await Case.create({ ...req.body, createdBy: req.user._id,
-      updates: [{ note: 'Case opened.', user: req.user.name }] });
+    const { title, description, category, urgency, location, coordinates, skillRequired } = req.body;
+    const newCase = await Case.create({
+      title, description, category, urgency, location, coordinates, skillRequired,
+      createdBy: req.user._id,
+      updates: [{ note: 'Case opened.', user: req.user.name }]
+    });
     return ok(res, newCase, 'Case created', 201);
   } catch (e) {
     return fail(res, e.message, 500);
@@ -65,7 +69,18 @@ exports.getCaseById = async (req, res) => {
 // PUT /api/cases/:id
 exports.updateCase = async (req, res) => {
   try {
-    const c = await Case.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { title, description, category, urgency, location, coordinates, skillRequired, status } = req.body;
+    const updateData = {};
+    if (title) updateData.title = title;
+    if (description) updateData.description = description;
+    if (category) updateData.category = category;
+    if (urgency) updateData.urgency = urgency;
+    if (location) updateData.location = location;
+    if (coordinates) updateData.coordinates = coordinates;
+    if (skillRequired) updateData.skillRequired = skillRequired;
+    if (status) updateData.status = status;
+
+    const c = await Case.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!c) return fail(res, 'Case not found', 404);
     return ok(res, c, 'Case updated');
   } catch (e) {

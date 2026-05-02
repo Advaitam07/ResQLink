@@ -8,7 +8,12 @@ exports.register = async (req, res) => {
     const { name, email, password, role } = req.body;
     if (await User.findOne({ email })) return fail(res, 'Email already registered');
 
-    const user = await User.create({ name, email, password, role: role || 'volunteer' });
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: (role && ['admin', 'coordinator', 'volunteer'].includes(role)) ? role : 'volunteer'
+    });
     return ok(res, { token: generateToken(user._id), user: sanitize(user) }, 'Registration successful', 201);
   } catch (e) {
     return fail(res, e.message, 500);
